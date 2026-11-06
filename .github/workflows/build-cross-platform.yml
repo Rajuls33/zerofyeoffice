@@ -1,0 +1,53 @@
+﻿name: Build macOS & Linux Releases
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install Linux build dependencies
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libarchive-tools libfuse2 desktop-file-utils
+
+      - name: Install Monorepo Dependencies
+        run: npm install
+
+      - name: Build macOS Binaries (.dmg)
+        if: matrix.os == 'macos-latest'
+        run: npm run dist:mac
+
+      - name: Build Linux Binaries (.AppImage & .deb)
+        if: matrix.os == 'ubuntu-latest'
+        run: npm run dist:linux
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: binaries-${{ matrix.os }}
+          path: |
+            apps/shell/release/*.dmg
+            apps/shell/release/*.AppImage
+            apps/shell/release/*.deb
+            apps/shell/dist/*.dmg
+            apps/shell/dist/*.AppImage
+            apps/shell/dist/*.deb
+          retention-days: 5
