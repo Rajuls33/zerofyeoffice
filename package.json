@@ -45,7 +45,6 @@
     "dist:linux": "npm run notices && npm run build:all && npm run dist:linux -w @zerofyeoffice/shell"
   },
   "dependencies": {
-    "@esbuild/win32-x64": "0.28.1",
     "esbuild": "0.28.1",
     "ws": "^8.21.1"
   },
