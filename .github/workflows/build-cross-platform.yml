@@ -21,6 +21,12 @@ jobs:
         with:
           node-version: 22
 
+      - name: Setup Rust toolchain (macOS targets)
+        if: matrix.os == 'macos-latest'
+        run: |
+          rustup update stable
+          rustup target add aarch64-apple-darwin x86_64-apple-darwin
+
       - name: Install Linux build dependencies
         if: matrix.os == 'ubuntu-latest'
         run: |
