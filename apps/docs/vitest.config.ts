@@ -1,0 +1,46 @@
+import { fileURLToPath } from 'node:url'
+import { defineConfig } from 'vitest/config'
+
+// resolve sibling source packages by path (not via node_modules), so a git
+// worktree whose node_modules is linked to another checkout still tests
+// against this checkout's edits (same convention as packages/pdf2docx)
+const local = (rel: string) => fileURLToPath(new URL(rel, import.meta.url))
+
+export default defineConfig({
+  resolve: {
+    alias: {
+      '@zerofyeoffice/docx-engine/lazy-media': local('../../packages/docx-engine/src/lazy-media.ts'),
+      '@zerofyeoffice/docx-engine': local('../../packages/docx-engine/src/index.ts'),
+      '@zerofyeoffice/font-metrics/resolve': local('../../packages/font-metrics/src/resolve.ts'),
+      '@zerofyeoffice/font-metrics/word-faces.json': local(
+        '../../packages/font-metrics/word-faces.json',
+      ),
+      '@zerofyeoffice/font-metrics': local('../../packages/font-metrics/src/index.ts'),
+      // subpath before the bare name: string aliases are prefix replacements
+      '@zerofyeoffice/electron-utils/headless-export': local(
+        '../../packages/electron-utils/src/headless-export.ts',
+      ),
+      '@zerofyeoffice/electron-utils/atomic-write': local(
+        '../../packages/electron-utils/src/atomic-write.ts',
+      ),
+      '@zerofyeoffice/electron-utils/safe-external-url': local(
+        '../../packages/electron-utils/src/safe-external-url.ts',
+      ),
+      '@zerofyeoffice/electron-utils/print-job': local(
+        '../../packages/electron-utils/src/print-job.ts',
+      ),
+      '@zerofyeoffice/electron-utils': local('../../packages/electron-utils/src/index.ts'),
+      '@zerofyeoffice/ai-provider/browser': local('../../packages/ai-provider/src/browser.ts'),
+      '@zerofyeoffice/ai-provider': local('../../packages/ai-provider/src/index.ts'),
+      '@zerofyeoffice/i18n': local('../../packages/i18n/src/index.ts'),
+      '@zerofyeoffice/ui': local('../../packages/ui/src/index.ts'),
+    },
+  },
+  test: {
+    include: ['tests/**/*.test.ts'],
+    // the engine's display-only `effective` keys stay out of saved-model toEqual
+    setupFiles: [local('../../packages/docx-engine/tests/setup-equality.ts')],
+    environment: 'jsdom',
+    testTimeout: 20000,
+  },
+})

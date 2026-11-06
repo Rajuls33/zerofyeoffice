@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <linearGradient id="zf-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1B2A5E"/>
+      <stop offset="1" stop-color="#080D20"/>
+    </linearGradient>
+    <mask id="zf-eye">
+      <rect width="1024" height="1024" fill="#fff"/>
+      <circle cx="512" cy="512" r="108" fill="#000"/>
+    </mask>
+  </defs>
+  <rect width="1024" height="1024" rx="228" fill="url(#zf-bg)"/>
+  <path d="M276 300H748L276 724H748" fill="none" stroke="#fff" stroke-width="92"
+        stroke-linecap="round" stroke-linejoin="round" mask="url(#zf-eye)"/>
+  <circle cx="512" cy="512" r="60" fill="#22D3EE"/>
+</svg>

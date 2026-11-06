@@ -1,0 +1,36 @@
+#!/bin/sh
+# zerofyeoffice launcher. Inside a packaged ZerofyeOffice it runs the bundled CLI on the
+# app's own Node runtime (ELECTRON_RUN_AS_NODE); in a dev checkout it falls
+# back to the system node and the local build output. Usually reached through
+# a symlink on the PATH, so the real location is resolved first.
+self="$0"
+while [ -L "$self" ]; do
+  target=$(readlink "$self")
+  case "$target" in
+    /*) self="$target" ;;
+    *) self="$(dirname "$self")/$target" ;;
+  esac
+done
+here=$(cd "$(dirname "$self")" && pwd)
+
+if [ -n "$ZEROFYEOFFICE_NODE" ]; then
+  exec "$ZEROFYEOFFICE_NODE" "$here/zerofyeoffice.cjs" "$@"
+fi
+
+case "$here" in
+  */Contents/Resources/cli) app="$here/../../MacOS/ZerofyeOffice" ;;
+  */resources/cli)
+    # Linux install, or the Windows install reached from Git Bash / MSYS
+    if [ -x "$here/../../ZerofyeOffice.exe" ]; then app="$here/../../ZerofyeOffice.exe"; else app="$here/../../zerofyeoffice"; fi
+    ;;
+  *) app="" ;;
+esac
+
+if [ -n "$app" ] && [ -x "$app" ]; then
+  ELECTRON_RUN_AS_NODE=1 exec "$app" "$here/zerofyeoffice.cjs" "$@"
+fi
+
+if [ -f "$here/zerofyeoffice.cjs" ]; then
+  exec node "$here/zerofyeoffice.cjs" "$@"
+fi
+exec node "$here/../dist/zerofyeoffice.cjs" "$@"

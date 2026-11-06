@@ -1,0 +1,16 @@
+﻿{
+    "icons":  [
+                  {
+                      "type":  "image/x-icon",
+                      "sizes":  "64x64 32x32 24x24 16x16",
+                      "src":  "/favicon.ico"
+                  }
+              ],
+    "description":  "Zero-Knowledge Sovereign Web Office Suite",
+    "background_color":  "#0f172a",
+    "theme_color":  "#2563eb",
+    "name":  "ZeroFye Office Suite",
+    "start_url":  "/",
+    "display":  "standalone",
+    "short_name":  "ZeroFye"
+}

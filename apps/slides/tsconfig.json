@@ -1,0 +1,31 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "types": ["node"],
+    // Pin resolution to this repo's workspace sources (avoids stale types when node_modules links point elsewhere)
+    "baseUrl": ".",
+    "paths": {
+      "@zerofyeoffice/pptx-engine": ["../../packages/pptx-engine/src/index.ts"],
+      "@zerofyeoffice/pptx-engine/table-grid": ["../../packages/pptx-engine/src/table-grid.ts"],
+      "@zerofyeoffice/pptx-engine/identity": ["../../packages/pptx-engine/src/identity.ts"],
+      "@zerofyeoffice/pptx-engine/named-action": ["../../packages/pptx-engine/src/named-action.ts"],
+      "@zerofyeoffice/pptx-engine/background-promote": [
+        "../../packages/pptx-engine/src/background-promote.ts"
+      ],
+      "@zerofyeoffice/pptx-ops": ["../../packages/pptx-ops/src/index.ts"],
+      "@zerofyeoffice/pptx-ops/op-docs": ["../../packages/pptx-ops/src/op-docs.ts"],
+      "@zerofyeoffice/pptx-ops/font-size": ["../../packages/pptx-ops/src/font-size.ts"],
+      "@zerofyeoffice/pptx-render": ["../../packages/pptx-render/src/index.ts"],
+      "@zerofyeoffice/pipelines/slides": ["../../packages/pipelines/src/slides/index.ts"],
+      "@zerofyeoffice/pipelines/slides/layout-audit": [
+        "../../packages/pipelines/src/slides/layout-audit.ts"
+      ],
+      "@zerofyeoffice/docx-engine/metafile": ["../../packages/docx-engine/src/metafile.ts"],
+      "@zerofyeoffice/docx-engine/math": ["../../packages/docx-engine/src/math.ts"],
+      "@zerofyeoffice/electron-utils": ["../../packages/electron-utils/src/index.ts"]
+    }
+  },
+  "include": ["src", "tests", "electron.vite.config.ts", "vitest.config.ts"]
+}

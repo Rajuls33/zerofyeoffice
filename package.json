@@ -1,0 +1,71 @@
+{
+  "name": "zerofyeoffice",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AI-native office suite (docs, sheets, slides, pdf, markdown, html)",
+  "license": "Apache-2.0",
+  "engines": {
+    "node": ">=22.12.0",
+    "npm": ">=10"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zerofye/zerofyeoffice.git"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "postinstall": "install-electron",
+    "format": "node tools/format-changed.mjs --write",
+    "format:check": "node tools/format-changed.mjs --check",
+    "check:theme-colors": "node tools/check-theme-colors.mjs",
+    "check:font-metrics-provenance": "node tools/check-font-metrics-provenance.mjs",
+    "check:generated-fonts": "node tools/check-generated-fonts.mjs",
+    "check:word-truths": "node tools/truths-coverage.mjs --check",
+    "check:english-comments": "node tools/check-english-comments.mjs",
+    "check:skill-version": "node tools/check-skill-version.mjs",
+    "check:help-langs": "node tools/check-help-langs.mjs",
+    "lint": "eslint .",
+    "fixtures": "npm run fixtures -w @zerofyeoffice/docx-engine",
+    "test": "npm run test -w @zerofyeoffice/i18n && npm run test -w @zerofyeoffice/electron-utils && npm run test -w @zerofyeoffice/font-metrics && npm run test -w @zerofyeoffice/zip-gate && npm run test -w @zerofyeoffice/docx-engine && npm run test -w @zerofyeoffice/pdf2docx && npm run test -w @zerofyeoffice/html2docx && npm run test -w @zerofyeoffice/file-parse && npm run test -w @zerofyeoffice/pptx-engine && npm run test -w @zerofyeoffice/xlsx-gateway && npm run test -w @zerofyeoffice/pptx-ops && npm run test -w @zerofyeoffice/pptx-render && npm run test -w @zerofyeoffice/pipelines && npm run test -w @zerofyeoffice/ai-search && npm run test -w @zerofyeoffice/agent-core && npm run test -w @zerofyeoffice/ai-provider && npm run test -w @zerofyeoffice/project-store && npm run test -w @zerofyeoffice/cli && npm run test -w @zerofyeoffice/ui && npm run test -w @zerofyeoffice/docs && npm run test -w @zerofyeoffice/sheets && npm run test -w @zerofyeoffice/shell && npm run test -w @zerofyeoffice/slides && npm run test -w @zerofyeoffice/pdf && npm run test -w @zerofyeoffice/markdown && npm run test -w @zerofyeoffice/html",
+    "typecheck": "npm run typecheck -w @zerofyeoffice/i18n && npm run typecheck -w @zerofyeoffice/electron-utils && npm run typecheck -w @zerofyeoffice/font-metrics && npm run typecheck -w @zerofyeoffice/zip-gate && npm run typecheck -w @zerofyeoffice/docx-engine && npm run typecheck -w @zerofyeoffice/pdf2docx && npm run typecheck -w @zerofyeoffice/html2docx && npm run typecheck -w @zerofyeoffice/file-parse && npm run typecheck -w @zerofyeoffice/pptx-engine && npm run typecheck -w @zerofyeoffice/xlsx-gateway && npm run typecheck -w @zerofyeoffice/pptx-ops && npm run typecheck -w @zerofyeoffice/pptx-render && npm run typecheck -w @zerofyeoffice/pipelines && npm run typecheck -w @zerofyeoffice/ai-search && npm run typecheck -w @zerofyeoffice/agent-core && npm run typecheck -w @zerofyeoffice/ai-provider && npm run typecheck -w @zerofyeoffice/project-store && npm run typecheck -w @zerofyeoffice/cli && npm run typecheck -w @zerofyeoffice/ui && npm run typecheck -w @zerofyeoffice/docs && npm run typecheck -w @zerofyeoffice/sheets && npm run typecheck -w @zerofyeoffice/shell && npm run typecheck -w @zerofyeoffice/slides && npm run typecheck -w @zerofyeoffice/pdf && npm run typecheck -w @zerofyeoffice/markdown && npm run typecheck -w @zerofyeoffice/html",
+    "predev": "node tools/build-stale-preloads.mjs",
+    "dev": "concurrently -k -n docs,sheets,slides,pdf,markdown,html,shell -c blue,green,yellow,red,cyan,white,magenta \"npm run dev:renderer -w @zerofyeoffice/docs\" \"npm run dev:renderer -w @zerofyeoffice/sheets\" \"npm run dev:renderer -w @zerofyeoffice/slides\" \"npm run dev:renderer -w @zerofyeoffice/pdf\" \"npm run dev:renderer -w @zerofyeoffice/markdown\" \"npm run dev:renderer -w @zerofyeoffice/html\" \"cross-env DOCS_RENDERER_URL=http://localhost:5173 SHEETS_RENDERER_URL=http://localhost:5174 SLIDES_RENDERER_URL=http://localhost:5175 PDF_RENDERER_URL=http://localhost:5176 MARKDOWN_RENDERER_URL=http://localhost:5177 HTML_RENDERER_URL=http://localhost:5178 npm run dev -w @zerofyeoffice/shell\"",
+    "dev:docs": "npm run dev -w @zerofyeoffice/docs",
+    "build": "npm run build:all",
+    "build:all": "npm run build -w @zerofyeoffice/docs && npm run build -w @zerofyeoffice/sheets && npm run build -w @zerofyeoffice/slides && npm run build -w @zerofyeoffice/pdf && npm run build -w @zerofyeoffice/markdown && npm run build -w @zerofyeoffice/html && npm run build -w @zerofyeoffice/cli && npm run build -w @zerofyeoffice/shell",
+    "shell": "npm run build:all && electron apps/shell",
+    "test:e2e": "playwright test --config e2e/playwright.config.ts",
+    "notices": "node tools/gen-third-party-notices.mjs",
+    "licenses": "node tools/check-licenses.mjs",
+    "dist:mac": "npm run notices && npm run build:all && npm run native:build:universal -w @zerofyeoffice/sheets && npm run dist:mac -w @zerofyeoffice/shell",
+    "dist:win": "npm run notices && npm run build:all && npm run dist:win -w @zerofyeoffice/shell",
+    "dist:linux": "npm run notices && npm run build:all && npm run dist:linux -w @zerofyeoffice/shell"
+  },
+  "dependencies": {
+    "@esbuild/win32-x64": "0.28.1",
+    "esbuild": "0.28.1",
+    "ws": "^8.21.1"
+  },
+  "overrides": {
+    "nanoid@3": "^3.3.17",
+    "nanoid@5": "^5.1.16",
+    "katex": "^0.18.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.61.1",
+    "concurrently": "^9.2.5",
+    "cross-env": "^10.1.0",
+    "eslint": "^10.8.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.8.0",
+    "pixelmatch": "^7.2.0",
+    "playwright-core": "^1.61.1",
+    "pngjs": "^7.0.0",
+    "prettier": "^3.9.6",
+    "typescript-eslint": "^8.65.0"
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    // the docs/markdown editor modules are typed against the DOM even though zerofyeoffice runs them under jsdom
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "types": ["node"],
+    // resolve sibling source packages by path (worktree-safe, see pdf2docx/tsconfig.json)
+    "paths": {
+      "@zerofyeoffice/docx-engine": ["../docx-engine/src/index.ts"],
+      "@zerofyeoffice/pptx-engine": ["../pptx-engine/src/index.ts"],
+      "@zerofyeoffice/pdf2docx": ["../pdf2docx/src/index.ts"],
+      "@zerofyeoffice/pptx-ops": ["../pptx-ops/src/index.ts"],
+      "@zerofyeoffice/pptx-render": ["../pptx-render/src/index.ts"],
+      "@zerofyeoffice/pipelines/slides": ["../pipelines/src/slides/index.ts"],
+      "@zerofyeoffice/pptx-ops/op-docs": ["../pptx-ops/src/op-docs.ts"],
+      "@zerofyeoffice/pptx-ops/font-size": ["../pptx-ops/src/font-size.ts"],
+      "@zerofyeoffice/xlsx-gateway/*": ["../xlsx-gateway/src/*"],
+      "@zerofyeoffice/font-metrics": ["../font-metrics/src/index.ts"],
+      "@zerofyeoffice/electron-utils": ["../electron-utils/src/index.ts"],
+      "@zerofyeoffice/electron-utils/*": ["../electron-utils/src/*"],
+      "@zerofyeoffice/ai-search": ["../ai-search/src/index.ts"],
+      "@zerofyeoffice/ai-provider": ["../ai-provider/src/index.ts"],
+      "@zerofyeoffice/ai-provider/browser": ["../ai-provider/src/browser.ts"],
+      "@zerofyeoffice/i18n": ["../i18n/src/index.ts"],
+      "@zerofyeoffice/ui": ["../ui/src/index.ts"]
+    }
+  },
+  // ambient declarations travel with the sources zerofyeoffice reuses: package module shims and the
+  // renderer window globals (window.desktop / window.markdownApi) the editor modules reference
+  "include": [
+    "src",
+    "tests",
+    "../pdf2docx/src/bidi-js.d.ts",
+    "../pptx-ops/src/raw.d.ts",
+    "../../apps/docs/src/renderer/env.d.ts",
+    "../../apps/markdown/src/renderer/env.d.ts",
+    "../../apps/markdown/src/renderer/types/wavedrom.d.ts"
+  ]
+}
